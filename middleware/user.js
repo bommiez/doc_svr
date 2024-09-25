@@ -52,6 +52,8 @@ const authenLevelLogin = async (req,res,next) =>{
             serviceResult.status = "Error";
             serviceResult.message = "token not found!";
             return res.status(401).json(serviceResult)
+         }else{
+            
          }
          let tokenKey = process.env.SECRET_KEY;
          jwt.verify(token, tokenKey, async (err, user) => {

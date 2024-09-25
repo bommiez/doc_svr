@@ -9,7 +9,7 @@ require('dotenv').config();
 const login = async(req,res) =>{
     const {username,password} = req.body;
     try{
-        let user = await User.findOne({ where: {username:username}});
+        let user = await User.findOne({ where: {username:username,active:'Y'}});
         if(!user){
            
             serviceResult.status = "Error";
@@ -26,12 +26,12 @@ const login = async(req,res) =>{
         }
 
         let tokenKey = process.env.SECRET_KEY;
-        let token = jwt.sign({username},tokenKey,{expiresIn:'1m'})
+        let token = jwt.sign({username},tokenKey,{expiresIn:'1h'})
         res.cookie('token',token,{
-            maxAge:30000,
-            secure: true,
-            httpOnly:true,
-            sameSite:"none",
+            maxAge: 60 * 60 * 1000
+            // secure: true,
+            // httpOnly:true,
+            // sameSite:"none",
         })
             
             serviceResult.status = "Success";

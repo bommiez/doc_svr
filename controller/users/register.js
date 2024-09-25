@@ -7,13 +7,25 @@ const serviceResult = require('../../models/serviceResult');
 const register = async (req,res) =>{
     
     try{
-        const {username , email , password , role ,active} = req.body;
+        const {username , email , password , confirmpassword ,firstname ,lastname ,sex ,fullname , nickname} = req.body;
+        if(password != confirmpassword){
+            serviceResult.status = "Error";
+            serviceResult.message = "Password not match"
+            return res.status(404).json(serviceResult)
+        }
+
+
         const hashpassword = await bcrypt.hash(password,12);
         User.username = username;
         User.email = email;
+        User.firstname =firstname;
+        User.lastname = lastname;
+        User.nickname = nickname;
+        User.sex = sex;
+        User.fullname = fullname
         User.password = hashpassword;
-        User.role = role;
-        User.active = active;
+        User.role = 'member';
+        User.active = 'Y';
         User.createAt = new Date();
         User.updateAt = new Date();
 
